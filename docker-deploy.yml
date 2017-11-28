@@ -36,5 +36,5 @@ services:
     image: memcached
     container_name: memcached
     expose:
-      - "11211:11211"
+      - "11211"
 version: "2"
