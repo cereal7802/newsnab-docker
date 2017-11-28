@@ -5,7 +5,7 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 # Install apache, PHP, and supplimentary programs. 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-curl php-json unrar lame mediainfo subversion ffmpeg supervisor
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-mbstring php-curl php-json unrar lame mediainfo subversion ffmpeg supervisor
 
 # Enable apache mods.
 RUN a2enmod rewrite
