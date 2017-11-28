@@ -1,24 +1,19 @@
 --- 
-version: "2"
 services: 
   db: 
     container_name: database
     environment: 
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=mydatabase
-      - MYSQL_USER=mydbuser
-      - MYSQL_PASSWORD=mydbpassword
+      - MYSQL_ROOT_PASSWORD=newznab
+      - MYSQL_DATABASE=newznab
+      - MYSQL_USER=newznab
+      - MYSQL_PASSWORD=newznab
     image: mariadb
-    #The ports Secion allows the mysql client on the host to connect to the dbserver
     ports: 
       - "127.0.0.1:3306:3306"
-    #uncomment the expose section and comment out the port section to allow only other containers to access mysql
-#    expose: 
-#      - "3306"
     restart: unless-stopped
     volumes: 
       - "$PWD/mysqldata:/var/lib/mysql"
-      - "$PWD/configs/mysql:/etc/mysql"
+      - "$PWD/configs/newznab-mysqld.cnf:/etc/mysql/conf.d/newznab.cnf"
   webserver: 
     build: build/webserver
     container_name: webserver
@@ -32,7 +27,8 @@ services:
       - "80:80"
     restart: unless-stopped
     volumes: 
-      - "$PWD/webdata:/var/www"
       - "$PWD/configs/apache:/etc/apache2"
       - "$PWD/configs/php:/etc/php/7.0/apache2/"
-
+      - "$PWD/nzb:/nzb"
+      - "$PWD/logs:/var/www/newznab/logs/"
+version: "2"

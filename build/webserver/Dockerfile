@@ -16,8 +16,42 @@ ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
+ENV nn_user user 
+ENV nn_pass password
+ENV path /:/var/www/newznab/www/
 
+# add the Config to Apache
+RUN mkdir /var/www/newznab/
+
+# pull NNab plus from SVN - Note you need the username and password for Svn Above
+RUN svn co --username $nn_user --password $nn_pass svn://svn.newznab.com/nn/branches/nnplus /var/www/newznab/
+RUN chmod 777 /var/www/newznab/www/lib/smarty/templates_c && \
+chmod 777 /var/www/newznab/www/covers/movies && \
+chmod 777 /var/www/newznab/www/covers/anime  && \
+chmod 777 /var/www/newznab/www/covers/music  && \
+chmod 777 /var/www/newznab/www  && \
+chmod 777 /var/www/newznab/www/install  && \
+chmod 777 /var/www/newznab/nzbfiles/ 
+
+RUN service apache2 restart
+
+# add newznab config file - This needs to be edited
+ADD ./config.php /var/www/newznab/www/config.php
+RUN chmod 777 /var/www/newznab/www/config.php
+
+#add newznab processing script
+ADD ./newznab.sh /newznab.sh
+RUN chmod 755 /*.sh
+
+#Setup supervisor to start Apache and the Newznab scripts to load headers and build releases
+
+RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Setup NZB volume this will need to be mapped locally using -v command so that it can persist.
 EXPOSE 80
+VOLUME /nzb
+WORKDIR /var/www/html/www/
 
-# By default, simply start apache.
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+#kickoff Supervisor to start the functions
+CMD ["/usr/bin/supervisord"]
