@@ -27,8 +27,14 @@ services:
       - "80:80"
     restart: unless-stopped
     volumes: 
+      - "$PWD/configs/newznab-php.ini:/etc/php/7.0/apache2/conf.d/newznab.ini"
       - "$PWD/configs/apache:/etc/apache2"
-      - "$PWD/configs/php:/etc/php/7.0/apache2/"
-      - "$PWD/nzb:/nzb"
+      - "$PWD/webdata/nzb:/var/www/newznab/nzbfiles"
+      - "$PWD/webdata/covers:/var/www/newznab/www/covers"
       - "$PWD/logs:/var/www/newznab/logs/"
+  memcached:
+    image: memcached
+    container_name: memcached
+    expose:
+      - "11211:11211"
 version: "2"

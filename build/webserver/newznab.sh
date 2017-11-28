@@ -14,8 +14,8 @@ while :
  do
 CURRTIME=`date +%s`
 cd ${NEWZNAB_PATH}
-php5 ${NEWZNAB_PATH}/update_binaries.php
-php5 ${NEWZNAB_PATH}/update_releases.php
+/usr/bin/php ${NEWZNAB_PATH}/update_binaries.php
+/usr/bin/php ${NEWZNAB_PATH}/update_releases.php
 
 
 
@@ -23,10 +23,10 @@ DIFF=$(($CURRTIME-$LASTOPTIMIZE))
 if [ "$DIFF" -gt 43200 ] || [ "$DIFF" -lt 1 ]
 then
 	LASTOPTIMIZE=`date +%s`
-	php5 ${NEWZNAB_PATH}/backfill.php
-	php5 ${NEWZNAB_PATH}/optimise_db.php
-	php5 ${NEWZNAB_PATH}/update_tvschedule.php
-	php5 ${NEWZNAB_PATH}/update_theaters.php
+	/usr/bin/php ${NEWZNAB_PATH}/backfill.php
+	/usr/bin/php ${NEWZNAB_PATH}/optimise_db.php
+	/usr/bin/php ${NEWZNAB_PATH}/update_tvschedule.php
+	/usr/bin/php ${NEWZNAB_PATH}/update_theaters.php
 fi
 
 echo "waiting ${NEWZNAB_SLEEP_TIME} seconds..."

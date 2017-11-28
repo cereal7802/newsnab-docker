@@ -5,7 +5,7 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 # Install apache, PHP, and supplimentary programs. 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-curl php-json unrar lame mediainfo subversion ffmpeg 
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-curl php-json unrar lame mediainfo subversion ffmpeg supervisor
 
 # Enable apache mods.
 RUN a2enmod rewrite
@@ -16,7 +16,7 @@ ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
-ENV nn_user user 
+ENV nn_user user
 ENV nn_pass password
 ENV path /:/var/www/newznab/www/
 
@@ -31,7 +31,7 @@ chmod 777 /var/www/newznab/www/covers/anime  && \
 chmod 777 /var/www/newznab/www/covers/music  && \
 chmod 777 /var/www/newznab/www  && \
 chmod 777 /var/www/newznab/www/install  && \
-chmod 777 /var/www/newznab/nzbfiles/ 
+chmod 777 /var/www/newznab/nzbfiles/
 
 RUN service apache2 restart
 
@@ -48,10 +48,8 @@ RUN chmod 755 /*.sh
 RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Setup NZB volume this will need to be mapped locally using -v command so that it can persist.
 EXPOSE 80
-VOLUME /nzb
-WORKDIR /var/www/html/www/
+WORKDIR /var/www/newznab/www/
 
 #kickoff Supervisor to start the functions
 CMD ["/usr/bin/supervisord"]
