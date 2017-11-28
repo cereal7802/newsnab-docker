@@ -17,8 +17,8 @@ services:
 #      - "3306"
     restart: unless-stopped
     volumes: 
-      - "/home/cereal/mysqldata:/var/lib/mysql"
-      - "/home/cereal/configs/mysql:/etc/mysql"
+      - "$PWD/mysqldata:/var/lib/mysql"
+      - "$PWD/configs/mysql:/etc/mysql"
   webserver: 
     build: build/webserver
     container_name: webserver
@@ -32,7 +32,7 @@ services:
       - "80:80"
     restart: unless-stopped
     volumes: 
-      - "/home/cereal/webdata:/var/www"
-      - "/home/cereal/configs/apache:/etc/apache2"
-      - "/home/cereal/configs/php:/etc/php/7.0/apache2/"
+      - "$PWD/webdata:/var/www"
+      - "$PWD/configs/apache:/etc/apache2"
+      - "$PWD/configs/php:/etc/php/7.0/apache2/"
 
