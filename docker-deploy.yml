@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+
+    db:
+        image: mariadb
+        restart: unless-stopped
+        container_name: database
+        volumes:
+          - /home/cereal/mysqldata:/var/lib/mysql
+          - /home/cereal/configs/mysql:/etc/mysql
+        ports:
+          - 127.0.0.1:3306:3306
+#          - 3306:3306
+        environment:
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_DATABASE=newznab
+          - MYSQL_USER=newznab
+          - MYSQL_PASSWORD=newznab
+          - PUID=1000
+          - PGID=1000
+
+    webserver:
+        build: build/webserver
+        restart: unless-stopped
+        container_name: webserver
+        volumes:
+          - /home/cereal/webdata:/var/www
+          - /home/cereal/configs/apache:/etc/apache2
+          - /home/cereal/configs/php:/etc/php/7.0/apache2/
+        ports:
+          - 80:80
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - APACHE_RUN_USER www-data
+          - APACHE_RUN_GROUP www-data
+          - APACHE_LOG_DIR /var/log/apache2
+          - APACHE_LOCK_DIR /var/lock/apache2
+          - APACHE_PID_FILE /var/run/apache2.pid
