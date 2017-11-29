@@ -1,25 +1,18 @@
 #!/bin/bash
 
 if [[ -z "$SVNUSER" || -z "$SVNPASS" ]]; then
-  echo "$(date) - Please set the SVNUSER and the SVNPASS environment vars for the container." >> /var/www/newznab/setup.log
+  echo "$(date) - Please set the SVNUSER and the SVNPASS environment vars for the container." >> /var/log/newznab/setup.log
   exit 1
 fi
 
 if [ -f /var/www/newznab/notouch ]; then
-  echo "$(date) - notouch file was found. newznab-setup.sh exited." >> /var/www/newznab/setup.log
+  echo "$(date) - notouch file was found. newznab-setup.sh exited." >> /var/log/newznab/setup.log
   exit
 fi
 
-/usr/bin/svn co --username "$SVNUSER" --password "$SVNPASS" svn://svn.newznab.com/nn/branches/nnplus /var/www/newznab/
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_USER} /var/www/newznab
 
-chmod 777 /var/www/newznab/www/lib/smarty/templates_c
-chmod 777 /var/www/newznab/www/covers/movies
-chmod 777 /var/www/newznab/www/covers/anime
-chmod 777 /var/www/newznab/www/covers/music
-chmod 777 /var/www/newznab/www
-chmod 777 /var/www/newznab/www/install
-chmod 777 /var/www/newznab/nzbfiles
-
+/usr/bin/svn co --username "$SVNUSER" --password "$SVNPASS" --non-interactive svn://svn.newznab.com/nn/branches/nnplus /var/www/newznab/
 
 cat > /var/www/newznab/www/config.php << EOF
 <?php
@@ -55,5 +48,14 @@ define('CACHEOPT_MEMCACHE_PORT', '11211');
 
 require("automated.config.php");
 EOF
+
+chown -R ${APACHE_RUN_USER}:${APACHE_RUN_USER} /var/www/newznab
+
+chmod -R 777 /var/www/newznab/www/lib/smarty/templates_c
+chmod -R 777 /var/www/newznab/www/covers
+chmod -R 777 /var/www/newznab/www/install
+chmod -R 777 /var/www/newznab/nzbfiles
+
+
 
 touch /var/www/newznab/notouch

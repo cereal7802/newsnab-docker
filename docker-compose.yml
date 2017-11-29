@@ -25,6 +25,7 @@ services:
       - "$PWD/configs/newznab-php.ini:/etc/php/7.0/apache2/conf.d/999-newznab.ini"
       - "$PWD/configs/apache:/etc/apache2"
       - "$PWD/webdata:/var/www/newznab"
+      - "$PWD/logs:/var/log/newznab"
   memcached:
     image: memcached
     container_name: memcached
