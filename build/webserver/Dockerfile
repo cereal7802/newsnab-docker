@@ -46,7 +46,7 @@ RUN chmod 755 /*.sh
 #Setup supervisor to start Apache and the Newznab scripts to load headers and build releases
 
 RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY newznab.sh.conf /etc/supervisor/conf.d/newznab.sh.conf
 
 RUN wget https://github.com/niel/php-yenc/releases/download/v1.3.0/php7.0-yenc_1.3.0_amd64.deb && dpkg -i php7.0-yenc_1.3.0_amd64.deb && rm php7.0-yenc_1.3.0_amd64.deb
 
