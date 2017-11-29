@@ -23,11 +23,14 @@ ENV path /:/var/www/newznab/www/
 ENV SNVUSER settosvnuser
 ENV SVNPASS settosvnpass
 
-RUN service apache2 restart
-
 #add newznab processing script
 ADD ./newznab.sh /newznab.sh
-RUN chmod 755 /*.sh
+
+#Copy the setup script that downloads the latest release
+COPY newznab-setup.sh /newznab-setup.sh
+
+#Make newznab bash scripts in / executable
+RUN chmod 755 /newznab*.sh
 
 #Setup supervisor to start Apache and the Newznab scripts to load headers and build releases
 RUN mkdir -p /var/lock/apache2 /var/run/apache2 /var/run/sshd /var/log/supervisor
