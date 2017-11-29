@@ -1,0 +1,33 @@
+--- 
+services: 
+  db: 
+    container_name: database
+    image: mariadb
+    extends:
+      file: base.yml
+      service: base
+    ports: 
+      - "127.0.0.1:3306:3306"
+    restart: unless-stopped
+    volumes: 
+      - "$PWD/mysqldata:/var/lib/mysql"
+      - "$PWD/configs/newznab-mysqld.cnf:/etc/mysql/conf.d/newznab.cnf"
+  webserver: 
+    build: build/webserver
+    container_name: webserver
+    extends:
+      file: base.yml
+      service: base
+    ports: 
+      - "80:80"
+    restart: unless-stopped
+    volumes: 
+      - "$PWD/configs/newznab-php.ini:/etc/php/7.0/apache2/conf.d/999-newznab.ini"
+      - "$PWD/configs/apache:/etc/apache2"
+      - "$PWD/webdata:/var/www/newznab"
+  memcached:
+    image: memcached
+    container_name: memcached
+    expose:
+      - "11211"
+version: "2"
