@@ -6,7 +6,7 @@ if [[ -z "$SVNUSER" || -z "$SVNPASS" ]]; then
 fi
 
 if ! [ -e "/var/www/newznab/notouch" ]; then
-  echo "$(date) - notouch file does not exist. Continueing newznab setup."
+  echo "$(date) - notouch file does not exist. continuing newznab setup."
 else
   echo "$(date) - notouch file was found. newznab-setup.sh exited."
   exit 0
