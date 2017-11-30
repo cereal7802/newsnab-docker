@@ -5,7 +5,7 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 # Install apache, PHP, and supplimentary programs. 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh wget screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-mbstring php-curl php-json unrar lame mediainfo subversion ffmpeg supervisor
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install ssh wget screen apache2 php libapache2-mod-php php-pear php-gd php-mysql php-mbstring php-curl php-json php-memcached unrar lame mediainfo subversion ffmpeg supervisor
 
 # Install yenc for php
 RUN wget https://github.com/niel/php-yenc/releases/download/v1.3.0/php7.0-yenc_1.3.0_amd64.deb && dpkg -i php7.0-yenc_1.3.0_amd64.deb && rm php7.0-yenc_1.3.0_amd64.deb
