@@ -14,3 +14,8 @@ services:
       - APACHE_LOG_DIR=/var/log/apache2
       - APACHE_LOCK_DIR=/var/lock/apache2
       - APACHE_PID_FILE=/var/run/apache2.pid
+      - NNTP_USERNAME=
+      - NNTP_PASS=
+      - NNTP_SERVER=
+      - NNTP_PORT=443
+      - NNTP_SSL=true
